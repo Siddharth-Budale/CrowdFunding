@@ -1,13 +1,1 @@
-crowd funding mongodb password
-
-gJDwbRs1j58lVLGF
-mongodb+srv://Siddharth:<password>@crowdfunding.nre9vum.mongodb.net/
-
-
-
-
-
-<p>Hello, <%= model.getAttribute("name") %>!</p>
-    <p>Hello, <%= model.getAttribute("description") %>!</p>
-    <p>Hello, <%= model.getAttribute("current_budget") %>!</p>
-    <p>Hello, <%= model.getAttribute("required_budget") %>!</p>
+dfsf
