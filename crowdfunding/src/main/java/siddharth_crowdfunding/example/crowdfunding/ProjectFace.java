@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProjectFace {
     @Autowired
     ProjectService projectService;
+
+    @GetMapping("/home")
+    public String index(){
+        return "index";
+    }
     @GetMapping("/update")
     public String update(){
         return "UpdateBudget";
@@ -22,6 +27,10 @@ public class ProjectFace {
         return "CreateForm";
     }
     @GetMapping("/print")
+    public String print(){
+        return "print";
+    }
+    @PostMapping("/print")
     public String print(@RequestParam("name") String name, Model model) throws  RuntimeException{
         try {
             Project project = projectService.getProjectByName(name);
@@ -29,7 +38,7 @@ public class ProjectFace {
             model.addAttribute("description", project.getDescription());
             model.addAttribute("current_budget", project.getCurrent_budget());
             model.addAttribute("required_budget", project.getRequired_budget());
-            return "PrintForm";  // Renders PrintForm.jsp
+            return "PrintForm";
         }catch (RuntimeException e){
             return "oops";
         }

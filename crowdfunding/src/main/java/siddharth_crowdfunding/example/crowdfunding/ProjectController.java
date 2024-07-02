@@ -28,7 +28,7 @@ public class ProjectController {
         }
         projectService.createProject(name, description, current_budget, required_budget);
     }
-    @PostMapping("/submitForm")
+    @PostMapping("/create")
     public void createProject(@RequestParam("name") String name, @RequestParam("description") String description,
     @RequestParam("current_budget") Double current_budget, @RequestParam("required_budget") double required_budget) {
         projectService.createProject(name, description, current_budget, required_budget);
