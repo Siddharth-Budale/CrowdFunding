@@ -12,5 +12,10 @@
       <input type="submit" name="submit" id="submit" />
     </form>
     <button onclick="history.back()">Go Back</button>
+
+    <h6>Note:</h6>
+
+          <div class="alert alert-success">${message}</div>
+          <div class="alert alert-danger">${error}</div>
   </body>
 </html>

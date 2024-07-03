@@ -54,13 +54,39 @@
     .btn:hover {
       background-color: #45a049;
     }
+
+    /* Alert styles */
+    .alert {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .alert-success {
+      background-color: #dff0d8;
+      color: #3c763d;
+    }
+
+    .alert-danger {
+      background-color: #f2dede;
+      color: #a94442;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Welcome!</h2>
-    <p>The requires Item Is Not Found.</p>
+    <p>The requested item is not found.</p>
     <a href="/api/project/print" class="btn">Explore More</a>
+
+    <!-- Display messages if present -->
+    <c:if test="${not empty message}">
+        <div class="alert alert-success">${message}</div>
+    </c:if>
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger">${error}</div>
+    </c:if>
   </div>
 </body>
 </html>

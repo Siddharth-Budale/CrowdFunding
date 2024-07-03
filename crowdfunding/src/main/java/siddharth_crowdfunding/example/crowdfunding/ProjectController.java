@@ -1,45 +1,64 @@
 package siddharth_crowdfunding.example.crowdfunding;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Map;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("api/project")
+@Controller
+@RequestMapping("/api/project")
 public class ProjectController {
     @Autowired
-    private ProjectService projectService;
+    ProjectService projectService;
 
-    @PostMapping
-    public void createProject(@RequestBody Map<String, String> tab) {
-        String name = tab.get("name");
-        String description = tab.get("description");
-        double current_budget;
-        double required_budget;
-        try{
-            current_budget=Double.parseDouble(tab.get("current_budget"));
-            required_budget=Double.parseDouble(tab.get("required_budget"));
-        }
-        catch (NumberFormatException e){
-            return;
-        }
+    @GetMapping("/home")  // the home page
+    public String index(){
+        return "Index";
+    }
+
+    @GetMapping("/create") // creation form
+    public String create(){
+        return "CreateForm";
+    }
+    @PostMapping("/create") // creates and then redirects
+    public String createProject(@RequestParam("name") String name, @RequestParam("description") String description,
+                              @RequestParam("current_budget") Double current_budget, @RequestParam("required_budget") double required_budget) {
         projectService.createProject(name, description, current_budget, required_budget);
+        return "redirect:/api/project/home";
     }
-    @PostMapping("/create")
-    public void createProject(@RequestParam("name") String name, @RequestParam("description") String description,
-    @RequestParam("current_budget") Double current_budget, @RequestParam("required_budget") double required_budget) {
-        projectService.createProject(name, description, current_budget, required_budget);
+    @GetMapping("/update") // updatation form
+    public String update(){
+        return "UpdateBudget";
     }
-
-    @PostMapping("/updateBudget")
-    public void updateCurrentBudget(@RequestParam("name") String name, @RequestParam("current_budget") double current_budget) {
-        projectService.updateCurrentBudget(name, current_budget);
+    @PostMapping("/updateBudget") //updates and redirects
+    public String updateCurrentBudget(@RequestParam("name") String name, @RequestParam("current_budget") double current_budget,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            projectService.updateCurrentBudget(name, current_budget);
+            redirectAttributes.addFlashAttribute("message", "Project updated successfully!");
+        }catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating project: " + e.getMessage());
+        }
+        return "redirect:/api/project/update";
     }
+    @GetMapping("/print") // print form
+    public String print(){
+        return "Print";
+    }
+    @PostMapping("/print") //prints the request
+    public String print(@RequestParam("name") String name, Model model , RedirectAttributes redirectAttributes) {
+        try {
+            Project project = projectService.getProjectByName(name);
+            model.addAttribute("name", project.getName());
+            model.addAttribute("description", project.getDescription());
+            model.addAttribute("current_budget", project.getCurrent_budget());
+            model.addAttribute("required_budget", project.getRequired_budget());
+            return "PrintForm";
+        }catch (RuntimeException e){
+            redirectAttributes.addFlashAttribute("message","Data Not Found");
+            return "redirect:./print";
 
-
-
-
+        }
+    }
 }

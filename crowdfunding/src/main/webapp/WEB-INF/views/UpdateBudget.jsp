@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <!-- Link to the CSS file -->
-             <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css">
+    <link
+      rel="stylesheet"
+      href="${pageContext.request.contextPath}/resources/css/styles.css"
+    />
   </head>
   <body>
     <h1>Update</h1>
@@ -20,5 +23,11 @@
       </div>
     </form>
     <button onclick="history.back()">Go Back</button>
+
+    <h6>Note:</h6>
+
+      <div class="alert alert-success">${message}</div>
+      <div class="alert alert-danger">${error}</div>
+
   </body>
 </html>

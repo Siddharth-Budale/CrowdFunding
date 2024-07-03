@@ -24,7 +24,7 @@ public class ProjectService {
         // Retrieve current budget
         Double currentBudget = findCurrentBudgetByName(name);
         if (currentBudget == null) {
-            return; // or handle the case where currentBudget is null
+            throw  new RuntimeException("Data Not Found");
         }
 
 
