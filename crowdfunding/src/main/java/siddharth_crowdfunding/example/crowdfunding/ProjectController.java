@@ -1,10 +1,14 @@
 package siddharth_crowdfunding.example.crowdfunding;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/project")
@@ -60,5 +64,26 @@ public class ProjectController {
             return "redirect:./print";
 
         }
+    }
+
+    @GetMapping("/fundBrowser")
+    public String Browser(Model model){
+        List<Project> projects= projectService.getProjectList();
+        for(Project project:projects){
+            System.out.println("Name: "+project.getName());
+
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String projectsJson = "";
+        try {
+            projectsJson = mapper.writeValueAsString(projects);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        // Add JSON string to the model
+        model.addAttribute("projectsJson", projectsJson);
+        return "FundBrowser";
+
     }
 }

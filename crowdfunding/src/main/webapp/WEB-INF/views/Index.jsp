@@ -28,6 +28,8 @@
         <a href="./create">Creation Form</a><br />
         <a href="./print">Print Form</a>
         <a href="./update">Update Form</a>
+        <a href="./fundBrowser">Fund Browser</a>
+
       </div>
     </section>
 

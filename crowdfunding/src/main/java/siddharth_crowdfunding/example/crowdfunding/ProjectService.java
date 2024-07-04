@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,4 +48,9 @@ public class ProjectService {
     }
 
 
+
+    public List<Project> getProjectList() {
+        List<Project> projectList = projectRepository.findAll();
+        return projectList;
+    }
 }
