@@ -20,7 +20,6 @@
 
     <!-- Container where the projects will be rendered -->
     <div id="projectContainer"></div>
-    <p>${projectsJson}</p>
 
     <script>
         // Get the JSON data from the JSP
@@ -35,10 +34,11 @@
 
             if (projects && projects.length > 0) {
                 projects.forEach(project => {
+                    console.log("parsed project name : ",project.name);
                     const projectDiv = document.createElement("div");
                     projectDiv.className = "project";
                     projectDiv.innerHTML = `
-                        <p><strong>Name:</strong> ${project.name}</p>
+                        <p><strong>Name:</strong> ${project.description}</p>
                         <p><strong>Description:</strong> ${project.description}</p>
                         <p><strong>Current Budget:</strong> ${project.currentBudget}</p>
                         <p><strong>Required Budget:</strong> ${project.requiredBudget}</p>
