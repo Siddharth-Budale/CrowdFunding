@@ -1,5 +1,6 @@
 package siddharth_crowdfunding.example.crowdfunding;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,10 +47,12 @@ public class PasswordController {
 
     @PostMapping("/submit-login")
     public String authenticate(@RequestParam("username") String username, @RequestParam("password") String password,
+                               HttpSession session,
                                RedirectAttributes redirectAttributes) {
         try {
             boolean isAuthenticated = passwordService.authentication(username, password);
             if (isAuthenticated) {
+                session.setAttribute("username", username);
                 return "redirect:/api/project/home";
             } else {
                 redirectAttributes.addFlashAttribute("message", "Invalid Credentials");

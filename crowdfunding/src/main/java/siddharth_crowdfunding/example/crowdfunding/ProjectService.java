@@ -16,8 +16,17 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
+    private String username="";
 
-    public void createProject( String name, String description,double current_budget,double required_budget ){
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void createProject(String name, String description, double current_budget, double required_budget ){
         projectRepository.insert(new Project(name, description, current_budget, required_budget));
     }
     public void updateCurrentBudget(String name,Double amt){

@@ -2,6 +2,7 @@ package siddharth_crowdfunding.example.crowdfunding;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,13 +18,28 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping("/home")
-    public String index() {
-        return "Index";
+    public String home(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username != null) {
+            projectService.setUsername(username);
+            // Add username to the model if needed
+            model.addAttribute("username", username);
+            return "Index"; // return the name of the view
+        } else {
+            return "redirect:/api/password/login";
+        }
     }
 
+
+
+
     @GetMapping("/create")
-    public String create() {
-        return "CreateForm";
+    public String create(Model model,HttpSession session) {
+        if (check(session)){
+            return "CreateForm";
+        }
+        return "redirect:/api/password/login";
+
     }
 
     @PostMapping("/create")
@@ -34,8 +50,9 @@ public class ProjectController {
     }
 
     @GetMapping("/update")
-    public String update() {
-        return "UpdateBudget";
+    public String update(HttpSession session) {
+        if (check(session)) return "UpdateBudget";
+        return "redirect:/api/password/login";
     }
 
     @PostMapping("/updateBudget")
@@ -51,8 +68,9 @@ public class ProjectController {
     }
 
     @GetMapping("/print")
-    public String print() {
-        return "Print";
+    public String print(HttpSession session) {
+        if (check(session)) return "Print";
+        return "redirect:/api/password/login";
     }
 
     @PostMapping("/print")
@@ -70,8 +88,10 @@ public class ProjectController {
         }
     }
 
+
     @GetMapping("/fundBrowser")
-    public String browser(Model model) {
+    public String browser(Model model,HttpSession session) {
+        if (!check(session)) return "redirect:/api/password/login";
         List<Project> projects = projectService.getProjectList();
         for (Project project : projects) {
             System.out.println("Name: " + project.getName());
@@ -88,4 +108,16 @@ public class ProjectController {
         model.addAttribute("projectsJson", projectsJson);
         return "FundBrowser";
     }
+    @GetMapping("/logout")
+    public String logout(RedirectAttributes redirectAttributes,HttpSession session){
+        projectService.setUsername(null);
+        session.removeAttribute("username");
+        return "redirect:/api/password/login";
+    }
+
+    public static boolean check(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        return username != null;
+    }
+
 }
