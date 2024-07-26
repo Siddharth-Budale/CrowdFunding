@@ -119,19 +119,22 @@
   </div>
     <div>
       <h1>Creation form: ${username}</h1>
-      <form action="./create" method="post">
-        <div>
-          <label for="name">Name</label>
-          <input type="text" name="name" id="name" required /> <br />
-          <label for="description">Description</label>
-          <input type="text" name="description" id="description" required /> <br />
-          <label for="current_budget">Current Budget</label>
-          <input type="number" name="current_budget" id="current_budget" required /> <br />
-          <label for="required_budget">Required Budget</label>
-          <input type="number" name="required_budget" id="required_budget" required />
-          <input type="submit" name="create" id="create" value="Create" />
-        </div>
+      <form action="./create" method="post" enctype="multipart/form-data">
+          <div>
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" required /> <br />
+              <label for="description">Description</label>
+              <input type="text" name="description" id="description" required /> <br />
+              <label for="current_budget">Current Budget</label>
+              <input type="number" name="current_budget" id="current_budget" required /> <br />
+              <label for="required_budget">Required Budget</label>
+              <input type="number" name="required_budget" id="required_budget" required /> <br />
+              <label for="image">Image Upload</label>
+              <input type="file" name="image" id="image" /> <br />
+              <input type="submit" name="create" id="create" value="Create" />
+          </div>
       </form>
+
       <button onclick="history.back()">Go Back</button>
     </div>
   </body>

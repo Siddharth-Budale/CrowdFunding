@@ -7,8 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -44,8 +47,21 @@ public class ProjectController {
 
     @PostMapping("/create")
     public String createProject(@RequestParam("name") String name, @RequestParam("description") String description,
-                                @RequestParam("current_budget") Double current_budget, @RequestParam("required_budget") double required_budget) {
-        projectService.createProject(name, description, current_budget, required_budget);
+                                @RequestParam("current_budget") Double current_budget,
+                                @RequestParam("required_budget") double required_budget,
+                                @RequestParam("image") MultipartFile image,
+                                HttpSession session,RedirectAttributes redirectAttributes) {
+
+        try {
+            byte[] imageBytes = image.getBytes();
+            projectService.createProject(name, (String) session.getAttribute("username"),
+                    description, current_budget, required_budget, imageBytes);
+            redirectAttributes.addFlashAttribute("message", "Project created successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Failed to create project.");
+        }
+
         return "redirect:/api/project/home";
     }
 
@@ -57,9 +73,9 @@ public class ProjectController {
 
     @PostMapping("/updateBudget")
     public String updateCurrentBudget(@RequestParam("name") String name, @RequestParam("current_budget") double current_budget,
-                                      RedirectAttributes redirectAttributes) {
+                                      RedirectAttributes redirectAttributes,HttpSession session) {
         try {
-            projectService.updateCurrentBudget(name, current_budget);
+            projectService.updateCurrentBudget(name, current_budget,session);
             redirectAttributes.addFlashAttribute("message", "Project updated successfully!");
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Error updating project: " + e.getMessage());
@@ -77,10 +93,15 @@ public class ProjectController {
     public String print(@RequestParam("name") String name, Model model, RedirectAttributes redirectAttributes) {
         try {
             Project project = projectService.getProjectByName(name);
+            String imageBase64 = "";
+            if (project.getImage() != null) {
+                imageBase64 = Base64.getEncoder().encodeToString(project.getImage());
+            }
             model.addAttribute("name", project.getName());
             model.addAttribute("description", project.getDescription());
             model.addAttribute("current_budget", project.getCurrent_budget());
             model.addAttribute("required_budget", project.getRequired_budget());
+            model.addAttribute("image", imageBase64);
             return "PrintForm";
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("message", "Data Not Found under : "+name);

@@ -9,15 +9,19 @@ public class Project {
     @Id
     private ObjectId id;
     private String name;
+    private String user;
     private String description;
     private double current_budget;
     private double required_budget;
+    private byte[] image;
 
-    public Project(String name, String description, double current_budget, double required_budget) {
+    public Project(String name, String user, String description, double current_budget, double required_budget, byte[] image) {
         this.name = name;
+        this.user = user;
         this.description = description;
         this.current_budget = current_budget;
         this.required_budget = required_budget;
+        this.image = image;
     }
 
     public double getCurrent_budget() {
@@ -40,4 +44,11 @@ public class Project {
         return description;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
 }
