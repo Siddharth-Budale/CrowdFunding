@@ -1,9 +1,16 @@
 package siddharth_crowdfunding.example.crowdfunding;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/project")
@@ -37,6 +44,24 @@ public class ProjectRestController {
 //        projectService.updateCurrentBudget(name, current_budget);
 //        return "redirect:/api/project/home";
 //    }
+
+
+//    @GetMapping("/fundBrowser")
+//    public String browser(Model model, HttpSession session) {
+//        if (!check(session)) {
+//            return "redirect:/api/password/login";
+//        }
+//
+//        List<Project> projects = projectService.getProjectList();
+//        model.addAttribute("projects", projects);
+//        return "fundBrowser";
+//    }
+
+
+    public static boolean check(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        return username != null;
+    }
 
 
 

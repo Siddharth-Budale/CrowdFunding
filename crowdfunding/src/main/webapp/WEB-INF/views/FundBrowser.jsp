@@ -26,7 +26,7 @@
         const projectsJson = '<%= request.getAttribute("projectsJson") %>';
 
         // Parse the JSON data
-        const projects = JSON.parse(projectsJson);
+        const projects = JSON.parse(projectsJson.replace(/&quot;/g, '\"'));
 
         // Function to render projects
         function renderProjects() {
@@ -38,10 +38,14 @@
                     const projectDiv = document.createElement("div");
                     projectDiv.className = "project";
                     projectDiv.innerHTML = `
-                        <p><strong>Name:</strong> ${project.description}</p>
-                        <p><strong>Description:</strong> ${project.description}</p>
-                        <p><strong>Current Budget:</strong> ${project.currentBudget}</p>
-                        <p><strong>Required Budget:</strong> ${project.requiredBudget}</p>
+                    <form action="./print" method="post">
+                                    <p><strong>Name:</strong> ${project.name}</p>
+                                    <p><strong>Description:</strong> ${project.description}</p>
+                                    <p><strong>Current Budget:</strong> ${project.currentBudget}</p>
+                                    <p><strong>Required Budget:</strong> ${project.requiredBudget}</p>
+                                    <input type="hidden" name="name" value="${project.name}">
+                                    <input type="submit" name="submit" id="submit" value="Submit" />
+                                </form>
                     `;
                     container.appendChild(projectDiv);
                 });

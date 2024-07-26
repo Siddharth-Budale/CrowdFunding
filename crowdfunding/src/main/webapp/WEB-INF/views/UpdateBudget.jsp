@@ -94,9 +94,50 @@
         background-color: #f8d7da;
         color: #721c24;
       }
+      .settings-container {
+                  position: absolute;
+                  top: 20px;
+                  right: 20px;
+                  display: inline-block;
+              }
+              .settings-icon {
+                  font-size: 32px;
+                  cursor: pointer;
+              }
+              .dropdown-content {
+                  display: none;
+                  position: absolute;
+                  right: 0;
+                  background-color: #f9f9f9;
+                  min-width: 200px;
+                  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                  z-index: 1;
+              }
+              .dropdown-content a {
+                  color: black;
+                  padding: 12px 16px;
+                  text-decoration: none;
+                  display: block;
+              }
+              .dropdown-content a:hover {
+                  background-color: #f1f1f1;
+              }
+              .settings-container:hover .dropdown-content {
+                  display: block;
+              }
     </style>
   </head>
   <body>
+  <div class="settings-container">
+      <span class="settings-icon">&#9881;</span>
+      <div class="dropdown-content">
+          <a href="http://localhost:8080/api/project/home">Home</a>
+          <a href="https://www.example.com/link2">Profile</a>
+          <a href="https://www.example.com/link3">Reference Link 3</a>
+          <a href="https://www.example.com/link4">Reference Link 4</a>
+          <a href="http://localhost:8080/api/project/logout">Logout</a>
+      </div>
+  </div>
     <h1>Update Budget</h1>
 
     <form action="./updateBudget" method="post">

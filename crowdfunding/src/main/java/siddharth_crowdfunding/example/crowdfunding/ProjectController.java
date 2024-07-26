@@ -83,15 +83,18 @@ public class ProjectController {
             model.addAttribute("required_budget", project.getRequired_budget());
             return "PrintForm";
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("message", "Data Not Found");
+            redirectAttributes.addFlashAttribute("message", "Data Not Found under : "+name);
             return "redirect:/api/project/print";
         }
     }
 
 
     @GetMapping("/fundBrowser")
-    public String browser(Model model,HttpSession session) {
-        if (!check(session)) return "redirect:/api/password/login";
+    public String browser(Model model, HttpSession session) {
+        if (!check(session)) {
+            return "redirect:/api/password/login";
+        }
+
         List<Project> projects = projectService.getProjectList();
         for (Project project : projects) {
             System.out.println("Name: " + project.getName());
@@ -107,7 +110,9 @@ public class ProjectController {
 
         model.addAttribute("projectsJson", projectsJson);
         return "FundBrowser";
+
     }
+
     @GetMapping("/logout")
     public String logout(RedirectAttributes redirectAttributes,HttpSession session){
         projectService.setUsername(null);

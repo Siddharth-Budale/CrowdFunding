@@ -39,4 +39,5 @@ public class Project {
     public String getDescription() {
         return description;
     }
+
 }
